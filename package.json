@@ -28,7 +28,6 @@
   },
   "homepage": "https://github.com/dskgry/express-restify-validator#readme",
   "dependencies": {
-    "eslint-config-prettier": "^2.2.0",
     "yup": "^0.21.3"
   },
   "devDependencies": {
