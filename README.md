@@ -5,7 +5,8 @@ Tries to be as declarative as possible by using yup (https://github.com/jquense/
 
 Highly work in progress atm.
 
-#Install
+## Install
+
 Not released yet.
 
 ## Usage will be
