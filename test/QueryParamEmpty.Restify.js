@@ -9,16 +9,17 @@ const validate = require('../src/index');
 
 describe('Empty configuration', () => {
     beforeAll(() => {
-        validate.configure({useExpress: false});
+        validate.configure({
+            useExpress: false,
+        });
     });
-
 
     it('validates to empty object with not validation rules', async done => {
         server.get('/',
             validate.query(),
             (req: RestifyRequest, res: RestifyResponse) => {
                 res.send(req.query);
-            }
+            },
         );
         const validResponse = await superTest(server).get('/?a=1&c=true&d=1&d=abc&e=1&e=2&IWILLBEGONE=true');
         expect(validResponse.status).toBe(200);
@@ -28,7 +29,14 @@ describe('Empty configuration', () => {
 
     it('validates nothing with no validation rules and stripUnknown false', async done => {
         server.get('/test/',
-            validate.query({a: validate.yup.string()}, {stripUnknown: false}),
+            validate.query(
+                {
+                    a: validate.yup.string(),
+                },
+                {
+                    stripUnknown: false,
+                }
+            ),
             (req: RestifyRequest, res: RestifyResponse) => {
                 res.send(req.query);
             }
@@ -39,8 +47,14 @@ describe('Empty configuration', () => {
             IWILLBEGONE: 'false',
             a: '1',
             c: 'true',
-            d: ['1', 'abc'],
-            e: ['1', '2']
+            d: [
+                '1',
+                'abc',
+            ],
+            e: [
+                '1',
+                '2',
+            ],
         });
         done();
     });

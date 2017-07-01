@@ -23,7 +23,14 @@ describe('Empty configuration', () => {
 
     it('validates nothing with no validation rules and stripUnknown false', async done => {
         server.get('/test/',
-            validate.query({a: validate.yup.string()}, {stripUnknown: false}),
+            validate.query(
+                {
+                    a: validate.yup.string(),
+                },
+                {
+                    stripUnknown: false,
+                }
+            ),
             (req: express$Request, res: express$Response) => {
                 res.send(req.query);
             }
@@ -34,8 +41,14 @@ describe('Empty configuration', () => {
             IWILLBEGONE: 'false',
             a: '1',
             c: 'true',
-            d: ['1', 'abc'],
-            e: ['1', '2']
+            d: [
+                '1',
+                'abc',
+            ],
+            e: [
+                '1',
+                '2',
+            ],
         });
         done();
     });

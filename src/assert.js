@@ -9,7 +9,6 @@
  */
 const isObject = (toAssert: any) => toAssert !== null && typeof toAssert === 'object';
 
-
 module.exports = {
     isObject,
 };

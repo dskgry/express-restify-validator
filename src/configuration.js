@@ -12,8 +12,17 @@ const GLOBAL_CONFIG: Config = {
 
 let configureCalled = false;
 
-const readGlobalConfig = () => Object.assign({}, GLOBAL_CONFIG); //return "copy" to avoid direct modification
+/**
+ * returns a "copy" of the global config to avoid direct manipulation of the config.
+ */
+const readGlobalConfig = () => Object.assign({}, GLOBAL_CONFIG);
 
+/**
+ * Can be called to configure the validation globally. This function can only be called once.
+ * Possible options are: stripUnkown, abortEarly and useExpress.
+ *
+ * @param opts A config object. Will be merged with the global configuration.
+ */
 const configure = (opts?: Config = GLOBAL_CONFIG) => {
     if (configureCalled) {
         throw new Error(`

@@ -12,11 +12,14 @@
  */
 const collectErrors = (e: ValidationErrorType, config: Config): Object => {
     if (config.abortEarly) {
-        return {[e.path]: e.errors,};
+        return {
+            [e.path]: e.errors,
+        };
     }
-    return e.inner.reduce((errors, currentValidation) => Object.assign(errors, {[currentValidation.path]: currentValidation.errors}), {});
+    return e.inner.reduce((errors, currentValidation) => Object.assign(errors, {
+        [currentValidation.path]: currentValidation.errors,
+    }), {});
 };
-
 
 /**
  *

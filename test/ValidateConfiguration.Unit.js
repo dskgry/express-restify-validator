@@ -6,6 +6,7 @@ describe('Global configuration', () => {
     beforeEach(() => {
         jest.resetModules();
     });
+
     it('Can be configured globally only once', async () => {
         const validate = require('../src/index');
         validate.configure();
@@ -35,5 +36,4 @@ describe('Global configuration', () => {
             useExpress: false,
         });
     });
-
 });

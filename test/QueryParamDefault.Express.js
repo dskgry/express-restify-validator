@@ -8,7 +8,6 @@ const validate = require('../src/index');
 const server = require('./ExpressServer');
 
 describe('Validate query params with express and default config', () => {
-
     beforeAll(() => {
         server.get('/',
             validate.query({
@@ -16,7 +15,7 @@ describe('Validate query params with express and default config', () => {
                 b: validate.yup.string().min(3, 'too short').default('bbb'),
                 c: validate.yup.boolean().required(),
                 d: validate.yup.array().required(),
-                e: validate.yup.array().of(validate.yup.number())
+                e: validate.yup.array().of(validate.yup.number()),
             }),
             (req: express$Request, res: express$Response) => {
                 res.send(req.query);
@@ -47,15 +46,23 @@ describe('Validate query params with express and default config', () => {
         const invalidRequestNoParams = await superTest(server).get('/?IWILLBEGONE=true');
         expect(invalidRequestNoParams.status).toBe(400);
         expect(invalidRequestNoParams.body).toEqual({
-            a: ['set me'],
-            c: ['c is a required field'],
-            d: ['d is a required field']
+            a: [
+                'set me',
+            ],
+            c: [
+                'c is a required field',
+            ],
+            d: [
+                'd is a required field',
+            ],
         });
 
         const invalidRequestBTooShortCNotABoolAndDNotArray = await superTest(server).get('/?a=1&b=a&c=test&d&IWILLBEGONE=true');
         expect(invalidRequestBTooShortCNotABoolAndDNotArray.status).toBe(400);
         expect(invalidRequestBTooShortCNotABoolAndDNotArray.body).toEqual({
-            b: ['too short'],
+            b: [
+                'too short',
+            ],
             c: ['c must be a `boolean` type, got: \"test\" instead'], //eslint-disable-line
             d: ['d must be a `array` type, got: \"\" instead'] //eslint-disable-line
         });
@@ -68,5 +75,4 @@ describe('Validate query params with express and default config', () => {
         });
         done();
     });
-
 });

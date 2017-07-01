@@ -7,10 +7,12 @@ const superTest = require('supertest');
 const validate = require('../src/index');
 const server = require('./ExpressServer');
 
-
 describe('Validate query params with express and overridden config', () => {
     beforeAll(() => {
-        validate.configure({abortEarly: true, stripUnknown: false});
+        validate.configure({
+            abortEarly: true,
+            stripUnknown: false,
+        });
         server.get('/',
             validate.query(
                 {
@@ -18,7 +20,7 @@ describe('Validate query params with express and overridden config', () => {
                     b: validate.yup.string().min(3, 'too short').default('bbb'),
                     c: validate.yup.boolean().required(),
                     d: validate.yup.array().required(),
-                    e: validate.yup.array().of(validate.yup.number())
+                    e: validate.yup.array().of(validate.yup.number()),
                 }
             ),
             (req: express$Request, res: express$Response) => {
@@ -42,7 +44,7 @@ describe('Validate query params with express and overridden config', () => {
                 1,
                 2,
             ],
-            IWILLBEGONE: 'false'
+            IWILLBEGONE: 'false',
         });
         done();
     });
@@ -53,5 +55,4 @@ describe('Validate query params with express and overridden config', () => {
         expect(Object.keys(invalidRequestNoParams.body).length).toBe(1); //result is random
         done();
     });
-
 });

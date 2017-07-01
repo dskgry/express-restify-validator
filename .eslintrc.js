@@ -5,14 +5,24 @@ module.exports = {
         "jest": true
     },
     "extends": [
-        "eslint:recommended",
+        "standard",
         "plugin:flowtype/recommended"
     ],
     "plugins": [
+        "standard",
+        "promise",
         "flowtype"
     ],
     "rules": {
         "indent": 0,
+        "spaced-comment": 0,
+        "comma-dangle": ["error", {
+            "arrays": "always",
+            "objects": "always",
+            "imports": "never",
+            "exports": "never",
+            "functions": "ignore",
+        }],
         "linebreak-style": [
             "error",
             "windows"
