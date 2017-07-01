@@ -9,4 +9,5 @@ type YupShape = {
 type Config = {
     stripUnknown?: boolean;
     abortEarly?: boolean;
+    useExpress?: boolean;
 }

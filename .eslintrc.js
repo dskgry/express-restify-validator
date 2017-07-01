@@ -12,10 +12,7 @@ module.exports = {
         "flowtype"
     ],
     "rules": {
-        "indent": [
-            "error",
-            4
-        ],
+        "indent": 0,
         "linebreak-style": [
             "error",
             "windows"

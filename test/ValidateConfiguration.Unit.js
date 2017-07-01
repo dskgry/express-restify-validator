@@ -2,10 +2,6 @@
 /**
  * @author dskgry
  */
-
-jest.mock('yup');
-const yup = require('yup');
-
 describe('Global configuration', () => {
     beforeEach(() => {
         jest.resetModules();
@@ -19,7 +15,7 @@ describe('Global configuration', () => {
     it('Has the expected global default configuration', async () => {
         const validate = require('../src/index');
         validate.configure();
-        expect(validate.readConfig()).toEqual({
+        expect(validate.readGlobalConfig()).toEqual({
             abortEarly: false,
             stripUnknown: true,
             useExpress: true,
@@ -33,7 +29,7 @@ describe('Global configuration', () => {
             stripUnknown: false,
             useExpress: false,
         });
-        expect(validate.readConfig()).toEqual({
+        expect(validate.readGlobalConfig()).toEqual({
             abortEarly: true,
             stripUnknown: false,
             useExpress: false,

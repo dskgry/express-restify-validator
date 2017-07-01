@@ -10,7 +10,7 @@ const validate = require('../src/index');
 describe('Empty configuration', () => {
     it('validates to empty object with not validation rules', async done => {
         server.get('/',
-            validate.queryParams(),
+            validate.query(),
             (req: express$Request, res: express$Response) => {
                 res.send(req.query);
             }
@@ -23,7 +23,7 @@ describe('Empty configuration', () => {
 
     it('validates nothing with no validation rules and stripUnknown false', async done => {
         server.get('/test/',
-            validate.queryParams({a: validate.yup.string()}, {stripUnknown: false}),
+            validate.query({a: validate.yup.string()}, {stripUnknown: false}),
             (req: express$Request, res: express$Response) => {
                 res.send(req.query);
             }

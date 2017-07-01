@@ -15,7 +15,7 @@ Not released yet.
  
  const server = express();
  server.get('/',
-    validate.queryParams({
+    validate.query({
         a: validate.yup.number().required('set me'),
         b: validate.yup.string().min(3, 'too short').default('bbb'),
         c: validate.yup.boolean().required(),

@@ -11,7 +11,7 @@ const server = require('./ExpressServer');
 describe('Validate query params with express and overridden config', () => {
     beforeAll(() => {
         server.get('/',
-            validate.queryParams(
+            validate.query(
                 {
                     a: validate.yup.number().required('set me'),
                     b: validate.yup.string().min(3, 'too short').default('bbb'),
