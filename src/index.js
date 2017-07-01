@@ -5,10 +5,33 @@
 
 const yup = require('yup');
 
+let configureCalled = false;
 
 const GLOBAL_CONFIG: Config = {
     stripUnknown: true,
-    abortEarly: false
+    abortEarly: false,
+    useExpress: true,
+};
+
+
+const readConfig = () => GLOBAL_CONFIG;
+
+const isObject = toAssert => typeof toAssert === 'object' && toAssert !== null;
+
+const configure = (opts?: Config = GLOBAL_CONFIG) => {
+    if (configureCalled) {
+        throw new Error(`
+            Global configuration must only be done once :). 
+            You can always change settings on route level, e.g. validate.queryParams(shape,config).
+            Changing the engine is not possible.
+        `);
+    }
+
+    if (isObject(opts)) {
+        Object.assign(GLOBAL_CONFIG, opts);
+    }
+
+    configureCalled = true;
 };
 
 
@@ -18,17 +41,15 @@ const collectErrors = (e: ValidationErrorType, config: Config): Object => {
             [e.path]: e.errors,
         };
     }
-    return e.inner.reduce((errors, currentValidation) => {
-        errors[currentValidation.path] = currentValidation.errors;
-        return errors;
-    }, {});
+    return e.inner.reduce((errors, currentValidation) => Object.assign(errors, {[currentValidation.path]: currentValidation.errors}), {});
 };
 
-const queryParams = (shape: YupShape, options: ?Config) => async (req: express$Request, res: express$Response, next: express$NextFunction): Promise<void> => {
+const queryParams = (shape: YupShape = {}, options?: ?Config = GLOBAL_CONFIG) => async (req: (express$Request | RestifyRequest),
+                                                                                        res: (express$Response | RestifyResponse),
+                                                                                        next: (express$NextFunction | RestifyNextFunction)): Promise<void> => {
     const config = Object.assign({}, GLOBAL_CONFIG, options);
     try {
-        const queryParams = req.query;
-        const validated = await yup.object().shape(shape).validate(queryParams, config);
+        const validated = await yup.object().shape(shape).validate(req.query, config);
 
         Object.assign((req: any), {
             query: validated,
@@ -37,7 +58,13 @@ const queryParams = (shape: YupShape, options: ?Config) => async (req: express$R
 
         next();
     } catch (e) {
-        res.status(400).json(collectErrors(e, config));
+        if (GLOBAL_CONFIG.useExpress) {
+            const expressResponse: express$Response = (res: any);
+            expressResponse.status(400).json(collectErrors(e, config));
+        } else {
+            const restifyResponse: RestifyResponse = (res: any);
+            restifyResponse.json(400, collectErrors(e, config));
+        }
     }
 };
 
@@ -45,4 +72,6 @@ const queryParams = (shape: YupShape, options: ?Config) => async (req: express$R
 module.exports = {
     queryParams,
     yup,
+    configure,
+    readConfig,
 };

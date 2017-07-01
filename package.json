@@ -7,8 +7,12 @@
   },
   "main": "src/index.js",
   "scripts": {
-    "test": "jest",
+    "test": "npm run test-unit && npm run test-express && npm run test-restify",
+    "test-express": "jest .Express.js",
+    "test-restify": "jest .Restify.js",
+    "test-unit": "jest .Unit.js",
     "flow": "flow",
+    "jest": "jest",
     "lint": "eslint ./",
     "build": "npm run flow && npm run lint && npm test"
   },
@@ -48,7 +52,7 @@
       ".*": "<rootDir>/node_modules/babel-jest"
     },
     "testMatch": [
-      "<rootDir>/test/**/*Test.js"
+      "<rootDir>/test/**/*.js"
     ]
   }
 }

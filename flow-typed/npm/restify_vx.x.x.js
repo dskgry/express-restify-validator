@@ -17,6 +17,17 @@ declare module 'restify' {
   declare module.exports: any;
 }
 
+declare type RestifyRequest = {
+  query:Object;
+};
+declare type RestifyResponse = {
+  status:(status:number)=>void;
+  json:(status:number,json:any)=>void;
+  send:(json:any)=>void;
+};
+
+declare type RestifyNextFunction = Function;
+
 /**
  * We include stubs for each file inside this npm package in case you need to
  * require those files directly. Feel free to delete any files that aren't
