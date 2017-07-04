@@ -5,7 +5,7 @@
   "engines": {
     "node": ">=7.6"
   },
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "npm run test-unit && npm run test-express && npm run test-restify",
     "test-express": "jest .Express.js",
@@ -14,7 +14,9 @@
     "flow": "flow",
     "jest": "jest",
     "lint": "eslint ./",
-    "build": "npm run flow && npm run lint && npm test"
+    "build": "npm run flow && npm run lint && npm test",
+    "remove-types": "flow-remove-types -q src/ -d dist",
+    "release": "npm run build && npm run remove-types"
   },
   "repository": {
     "type": "git",
