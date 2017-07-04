@@ -4,7 +4,7 @@
  */
 
 const superTest = require('supertest');
-const validate = require('../src/index');
+const validate = require('../../src/index');
 const server = require('./RestifyServer');
 
 describe('Validate query params with restify and overridden config', () => {

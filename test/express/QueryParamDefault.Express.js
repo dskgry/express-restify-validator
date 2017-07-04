@@ -4,7 +4,7 @@
  */
 
 const superTest = require('supertest');
-const validate = require('../src/index');
+const validate = require('../../src/index');
 const server = require('./ExpressServer');
 
 describe('Validate query params with express and default config', () => {

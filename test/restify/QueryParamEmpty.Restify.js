@@ -4,16 +4,22 @@
  */
 
 const superTest = require('supertest');
-const server = require('./ExpressServer');
-const validate = require('../src/index');
+const validate = require('../../src/index');
+const server = require('./RestifyServer');
 
 describe('Empty configuration', () => {
+    beforeAll(() => {
+        validate.configure({
+            useExpress: false,
+        });
+    });
+
     it('validates to empty object with not validation rules', async done => {
         server.get('/',
             validate.query(),
-            (req: express$Request, res: express$Response) => {
+            (req: RestifyRequest, res: RestifyResponse) => {
                 res.send(req.query);
-            }
+            },
         );
         const validResponse = await superTest(server).get('/?a=1&c=true&d=1&d=abc&e=1&e=2&IWILLBEGONE=true');
         expect(validResponse.status).toBe(200);
@@ -24,14 +30,12 @@ describe('Empty configuration', () => {
     it('validates nothing with no validation rules and stripUnknown false', async done => {
         server.get('/test/',
             validate.query(
-                {
-                    a: validate.yup.string(),
-                },
+                {},
                 {
                     stripUnknown: false,
                 }
             ),
-            (req: express$Request, res: express$Response) => {
+            (req: RestifyRequest, res: RestifyResponse) => {
                 res.send(req.query);
             }
         );

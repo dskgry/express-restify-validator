@@ -17,7 +17,7 @@ const errors = require('./errors');
  * @returns {Promise.<void>}
  */
 const validate = async (shape: YupShape,
-                        what: string,
+                        what: 'query' | 'body',
                         options: Config,
                         req: (express$Request | RestifyRequest),
                         res: (express$Response | RestifyResponse),
@@ -27,10 +27,11 @@ const validate = async (shape: YupShape,
         useExpress: globalConfig.useExpress,
     });
     try {
-        const validated = await yup.object().shape(shape).validate(req.query, config);
-        Object.assign((req: any), {
+        const toValidate = (req: Object)[what];
+        const validated = await yup.object().shape(shape).validate(toValidate, config);
+        Object.assign((req: Object), {
             [what]: validated,
-            [`orig${what}`]: req.query,
+            [`orig${what}`]: toValidate,
         });
         next();
     } catch (validationErrors) {

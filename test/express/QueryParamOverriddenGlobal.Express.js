@@ -4,13 +4,12 @@
  */
 
 const superTest = require('supertest');
-const validate = require('../src/index');
-const server = require('./RestifyServer');
+const validate = require('../../src/index');
+const server = require('./ExpressServer');
 
-describe('Validate query params with restify and overridden config', () => {
+describe('Validate query params with express and overridden config', () => {
     beforeAll(() => {
         validate.configure({
-            useExpress: false,
             abortEarly: true,
             stripUnknown: false,
         });
@@ -22,15 +21,11 @@ describe('Validate query params with restify and overridden config', () => {
                     c: validate.yup.boolean().required(),
                     d: validate.yup.array().required(),
                     e: validate.yup.array().of(validate.yup.number()),
-                },
-                {
-                    stripUnknown: false,
-                    abortEarly: true,
                 }
             ),
-            (req: RestifyRequest, res: RestifyResponse) => {
+            (req: express$Request, res: express$Response) => {
                 res.send(req.query);
-            },
+            }
         );
     });
 
