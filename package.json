@@ -5,7 +5,7 @@
   "engines": {
     "node": ">=7.6"
   },
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "npm run test-unit && npm run test-express && npm run test-restify",
     "test-express": "jest .Express.js",
@@ -15,9 +15,12 @@
     "jest": "jest",
     "lint": "eslint ./",
     "build": "npm run flow && npm run lint && npm test",
-    "remove-types": "flow-remove-types -q src/ -d dist",
+    "remove-types": "flow-remove-types -q src/ -d lib",
     "release": "npm run build && npm run remove-types"
   },
+  "files": [
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dskgry/express-restify-validator.git"
